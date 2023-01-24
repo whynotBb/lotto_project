@@ -1,13 +1,108 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Again My Life LOTTO</title>
+    <link rel="stylesheet" href="./css/layout.css" />
   </head>
   <body>
-    <h1>123</h1>
-    <h2>lala</h2>
+    <header>
+      <h1>again my life lotto</h1>
+    </header>
+    <main>
+      <div class="btns">
+        <label>
+          <input type="radio" value="1" name="lotto" />
+          <span>1</span>
+        </label>
+        <label>
+          <input type="radio" value="2" name="lotto" />
+          <span>2</span>
+        </label>
+        <label>
+          <input type="radio" value="3" name="lotto" />
+          <span>3</span>
+        </label>
+        <label>
+          <input type="radio" value="4" name="lotto" />
+          <span>4</span>
+        </label>
+        <label>
+          <input type="radio" value="5" name="lotto" />
+          <span>5</span>
+        </label>
+      </div>
+      <div class="paper">
+        <ul></ul>
+      </div>
+    </main>
+    <script>
+      // 0*46+1 < Math.random()*46 +1 < 1*46+1
+
+      const paper = document.querySelector(".paper ul");
+
+      const btns = document.querySelectorAll(".btns input");
+
+      btns.forEach(function (item, i) {
+        item.addEventListener("change", function () {
+          paper.innerHTML = "";
+          paper.parentElement.classList.remove("on");
+          setTimeout(function () {
+            paper.parentElement.classList.add("on");
+            for (let j = 0; j <= i; j++) {
+              makeLotto();
+            }
+          }, 300);
+          //중복클릭 방지 숙제
+        });
+      });
+      function makeLotto() {
+        const nums = [];
+        const lotto = [];
+
+        for (let i = 1; i <= 46; i++) {
+          nums.push(i);
+        }
+        for (let i = 0; i < 6; i++) {
+          const selected = nums
+            .splice(Math.floor(Math.random() * nums.length), 1)
+            .pop();
+          lotto.push(selected);
+          //고정 된 숫자를 쓰지 말고 nums.length
+          //배열을 숫자로 빼내려면 .pop()
+          //console.log("🚀 ~ file: index.html:18 ~ selected", selected);
+        }
+        lotto.sort(function (first, second) {
+          //if (first > second) {
+          //  return 1;
+          //} else if (first < second) {
+          //  return -1;
+          //} else {
+          //  return 0;
+          //}
+          return first - second;
+          //return second - first;
+        });
+        //sort 는 앞 자리만 정렬 하므로, 콜백함수가 필요
+        //console.log(lotto);
+        lotto.forEach(function (item) {
+          let color = "";
+          if (item <= 10) {
+            color = "yellow";
+          } else if (item <= 20) {
+            color = "blue";
+          } else if (item <= 30) {
+            color = "red";
+          } else if (item <= 40) {
+            color = "black";
+          } else {
+            color = "green";
+          }
+          paper.innerHTML += `<li class="${color}">${item}</li>`;
+        });
+      }
+    </script>
   </body>
 </html>
